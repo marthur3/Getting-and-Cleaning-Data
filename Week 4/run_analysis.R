@@ -86,3 +86,4 @@ tidy_independent_data <- select_data %>%
         group_by(Activity_name, Subjects) %>% 
         summarise_all (funs(mean))
 
+write.table(tidy_independent_data, row.names = F, file = "tidy_data_set.txt")
