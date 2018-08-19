@@ -1,30 +1,19 @@
----
-title: "Getting and Cleaning run_analysis Codebook"
-output: github_document
----
-
-```{r setup, include=FALSE}
-knitr::opts_chunk$set(echo = FALSE)
-```
-
-```{r code, include = FALSE, echo=TRUE}
 library(tidyverse)
 library(data.table)
 
 
-```
-## Data Overview
+fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+zippedFileName <- "wearables_data.zip"
 
-This project is to demonstrate the ability to take in and clean messy data. The data itself comes from the Human Activity Recognition Using Smartphones Dataset and is available for download at: https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip
+if (!file.exists(zippedFileName)) {
+        download.file(fileUrl, destfile = "./data/wearables_data.zip")
+        dateDownloaded <- date()
+}
 
-Within the dataset there are two folders, test and train, which contain the raw data. Additionally there are four text files which provide more information about the raw data.
+wd <- "C:/Users/Michael A/Documents/R Folder/Getting and Cleaning Data/Week 4"
+unzip(zipfile = "data/wearables_data.zip", exdir = paste0(wd,"/data"))
 
 
-## Variables
-
-The data variables for both test and train come from the features table. In order to combine with the raw data the features table columns are united into a single column and a new column "Activity_name" is created from the test activities .txt file. The code below only shows the transformation for the test data, same process is done for the train data.
-
-```{r, variables, echo=T}
 ### Test ####
 test_data <- fread("UCI HAR Dataset/test/X_test.txt")
 test_activities <- (fread("UCI HAR Dataset/test/y_test.txt"))
@@ -47,12 +36,6 @@ test_activities$Subjects <- subject_test
 
 test_data <- cbind(test_data, test_activities)
 
-glimpse(test_data)
-```
-
-
-
-```{r, rest of th data, echo=F, include=FALSE}
 ### Train ####
 train_data <- fread("UCI HAR Dataset/train/X_train.txt")
 train_activities <- (fread("UCI HAR Dataset/train/y_train.txt"))
@@ -75,23 +58,17 @@ train_activities$Subjects <- subject_train
 
 ###Combines the data with the labels
 train_data <- cbind(train_data, train_activities)
-```
+
 
 #### Combine #####
-###Join the test and train data and create a new tidy data set.
-
-I first joined the test and train data to create the total data category.
-```{r, join, echo=TRUE}
+###Join the test and train data
 total_data <- rbind(test_data, train_data, fill = T)
 
-### New variable after the join
+### Test the join
 total_data %>% 
         group_by(Activity_name) %>% 
         summarise(Count = n())
-```
 
-The final step creates a second, independent tidy data set with the average of each variable for each activity and each subject.
-```{r, echo = T}
 ###Collect the column names
 measurements <- as.tibble(names(total_data))
 
@@ -108,12 +85,4 @@ select_data <- total_data %>%
 tidy_independent_data <- select_data %>% 
         group_by(Activity_name, Subjects) %>% 
         summarise_all (funs(mean))
-```
-
-
-
-
-
-
-
 
