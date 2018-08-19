@@ -1,17 +1,17 @@
 library(tidyverse)
 library(data.table)
 
-
-fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
-zippedFileName <- "wearables_data.zip"
-
-if (!file.exists(zippedFileName)) {
-        download.file(fileUrl, destfile = "./data/wearables_data.zip")
-        dateDownloaded <- date()
-}
-
-wd <- "C:/Users/Michael A/Documents/R Folder/Getting and Cleaning Data/Week 4"
-unzip(zipfile = "data/wearables_data.zip", exdir = paste0(wd,"/data"))
+# setwd("~/GitHub/Getting and Cleaning Data/Week 4")
+# wd <- "C:/Users/Michael A/Documents/GitHub/Getting and Cleaning Data/Week 4"
+# fileUrl <- "https://d396qusza40orc.cloudfront.net/getdata%2Fprojectfiles%2FUCI%20HAR%20Dataset.zip"
+# zippedFileName <- "wearables_data.zip"
+# 
+# if (!file.exists(zippedFileName)) {
+#         download.file(fileUrl, destfile = "./data/wearables_data.zip")
+#         dateDownloaded <- date()
+# }
+# 
+# unzip(zipfile = "data/wearables_data.zip", exdir = paste0(wd,"/data"))
 
 
 ### Test ####
